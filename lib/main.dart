@@ -19,11 +19,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'IIOT lab mini project',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Auto Aligning Star Mount'),
     );
   }
 }
@@ -52,7 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
   bool switchvalue = false;
 
   void _sendReq () async {
-    int switchnum (switchvalue)
+    int switchnum(switchvalue)
     {if(switchvalue == true) {return 0;} else {return 1;}}
 
     String toggle_req = blynkurlbase + "token=" + blynktoken + "&dataStreamId="
@@ -63,12 +64,6 @@ class _MyHomePageState extends State<MyHomePage> {
         + blynkdatastreamidlatlong.toString() + "&value=" +
         "lat" + myControllerLat.text + "lon" + myControllerLong.text;
     var response_latlong = await http.get(Uri.parse(latlong_req));
-  }
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
   }
 
   @override
@@ -142,12 +137,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-        backgroundColor: Colors.red,
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
