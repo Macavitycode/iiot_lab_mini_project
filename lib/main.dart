@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:syncfusion_flutter_sliders/sliders.dart';
+
 import 'dart:async';
 
 
@@ -52,6 +54,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   bool switchvalue = false;
 
+  double slidervalue1 = 0;
+  double slidervalue2 = 0;
+
   void _sendReq () async {
     int switchnum(switchvalue)
     {if(switchvalue == true) {return 0;} else {return 1;}}
@@ -60,9 +65,14 @@ class _MyHomePageState extends State<MyHomePage> {
     + blynkdatastreamidbutton.toString() + "&value=" + switchnum(switchvalue).toString();
     var response_button = await http.get(Uri.parse(toggle_req));
 
+    // String latlong_req = blynkurlbase + "token=" + blynktoken + "&dataStreamId="
+    //     + blynkdatastreamidlatlong.toString() + "&value=" +
+    //     "lat" + myControllerLat.text + "lon" + myControllerLong.text;
+
     String latlong_req = blynkurlbase + "token=" + blynktoken + "&dataStreamId="
         + blynkdatastreamidlatlong.toString() + "&value=" +
-        "lat" + myControllerLat.text + "lon" + myControllerLong.text;
+        slidervalue1.toInt().toString() + "-" + slidervalue2.toInt().toString();
+
     var response_latlong = await http.get(Uri.parse(latlong_req));
   }
 
@@ -82,12 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
               const SizedBox(height: 10),
 
               FlutterSwitch(
-                // width: 125.0,
-                // height: 55.0,
-                // valueFontSize: 25.0,
-                // toggleSize: 45.0,
                 value: switchvalue,
-                // borderRadius: 30.0,
                 padding: 8.0,
                 showOnOff: true,
                 onToggle: (val) {
@@ -100,39 +105,69 @@ class _MyHomePageState extends State<MyHomePage> {
 
               const SizedBox(height: 10),
 
-              TextField(
-                controller: myControllerLat,
-                decoration: const InputDecoration(
-                  hintText: 'Enter lat',
-                ),
-              ),
-
-              const SizedBox(height: 10),
-
-              TextField(
-                controller: myControllerLong,
-                decoration: const InputDecoration(
-                  hintText: 'Enter long',
-                ),
-              ),
-
-              const SizedBox(height: 10),
+              // TextField(
+              //   controller: myControllerLat,
+              //   decoration: const InputDecoration(
+              //     hintText: 'Enter lat',
+              //   ),
+              // ),
+              //
+              // const SizedBox(height: 10),
+              //
+              // TextField(
+              //   controller: myControllerLong,
+              //   decoration: const InputDecoration(
+              //     hintText: 'Enter long',
+              //   ),
+              // ),
+              //
+              // const SizedBox(height: 10),
 
               TextButton(
                 onPressed: _sendReq,
-                child: const Text('Send Lat and long'),
+                child: const Text('Send Update!'),
               ),
 
-              const SizedBox(height: 40),
-
-              const Text(
-                'You have pushed the button this many times:',
-              ),
               const SizedBox(height: 10),
-              Text(
-                '$_counter',
-                style: Theme.of(context).textTheme.headline4,
-              ),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SfSlider.vertical(
+                    min: 0.0,
+                    max: 100.0,
+                    value: slidervalue1,
+                    interval: 20,
+                    showTicks: true,
+                    showLabels: true,
+                    minorTicksPerInterval: 1,
+                    onChanged: (dynamic value){
+                      setState(() {
+                        slidervalue1 = value;
+                        _sendReq();
+                      });
+                    },
+                  ),
+
+                  const SizedBox(width: 100),
+
+                  SfSlider.vertical(
+                    min: 0.0,
+                    max: 100.0,
+                    value: slidervalue2,
+                    interval: 20,
+                    showTicks: true,
+                    showLabels: true,
+                    minorTicksPerInterval: 1,
+                    onChanged: (dynamic value){
+                      setState(() {
+                        slidervalue2 = value;
+                        _sendReq();
+                      });
+                    },
+                  )
+                ],
+              )
             ],
           ),
         ),
